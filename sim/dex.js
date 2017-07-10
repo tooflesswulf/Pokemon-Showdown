@@ -1253,17 +1253,21 @@ class ModdedDex {
 	 * @return {AnyObject}
 	 */
 	loadDataFile(basePath, dataType) {
+		// console.log(`loading data.  type=${dataType}`)
+
 		try {
 			const filePath = basePath + DATA_FILES[dataType];
 			const dataObject = require(filePath);
 			const key = `Battle${dataType}`;
 			if (!dataObject || typeof dataObject !== 'object') return new TypeError(`${filePath}, if it exists, must export a non-null object`);
 			if (!dataObject[key] || typeof dataObject[key] !== 'object') return new TypeError(`${filePath}, if it exists, must export an object whose '${key}' property is a non-null object`);
+			if (dataType=='Pokedex') console.log(dataObject[key]['pokebro'])
 			return dataObject[key];
 		} catch (e) {
 			if (e.code !== 'MODULE_NOT_FOUND') {
 				throw e;
 			}
+			console.log(`error, type=${dataType}`)
 		}
 		return {};
 	}
